@@ -36,6 +36,7 @@
   let operatorSecond = null;
   let displayReset = false;
   let displayValue = 0;
+  let decimalToggle = false;
   function updateDisplay(digitPress) {
     switch (displayValue) {
       case 0:
@@ -53,7 +54,11 @@
     operandRightSide = displayValue;
     document.getElementById("display").innerHTML = displayValue;
   }
-  function operate() {
+  function operate(operator) {
+    if (operatorSecond == "equals") {
+      operatorFirst = null;
+    }
+    operatorSecond = operator;
     displayReset = true;
     switch (operatorFirst) {
       case "addition":
@@ -74,11 +79,6 @@
       operatorFirst = operatorSecond;
     }
     document.getElementById("display").innerHTML = displayValue;
-    console.log("After operate()");
-    console.log("operandLeftSide: ", operandLeftSide);
-    console.log("operandRightSide: ", operandRightSide);
-    console.log("operatorFirst: ", operatorFirst);
-    console.log("operatorSecond: ", operatorSecond);
   }
   document.getElementById("one").addEventListener("click", function () {
     updateDisplay(1);
@@ -123,35 +123,26 @@
     displayValue *= -1;
     document.getElementById("display").innerHTML = displayValue;
     operandRightSide = displayValue;
-    console.log("displayValue", displayValue);
-    console.log("operandLeftSide: ", operandLeftSide);
-    console.log("operandRightSide: ", operandRightSide);
   });
   document.getElementById("percent").addEventListener("click", function () {});
   document.getElementById("division").addEventListener("click", function () {
-    operatorSecond = "division";
-    operate();
+    operate("division");
   });
   document
     .getElementById("multiplication")
     .addEventListener("click", function () {
-      operatorSecond = "multiplication";
-      operate();
+      operate("multiplication");
     });
   document.getElementById("subtraction").addEventListener("click", function () {
-    operatorSecond = "subtraction";
-    operate();
+    operate("subtraction");
   });
   document.getElementById("addition").addEventListener("click", function () {
-    if (operatorSecond == "equals") {
-      operatorFirst = null;
-    }
-    operatorSecond = "addition";
-    operate();
+    operate("addition");
   });
-  document.getElementById("decimal").addEventListener("click", function () {});
+  document.getElementById("decimal").addEventListener("click", function () {
+    decimalToggle = true;
+  });
   document.getElementById("equals").addEventListener("click", function () {
-    operatorSecond = "equals";
-    operate();
+    operate("equals");
   });
 </script>
