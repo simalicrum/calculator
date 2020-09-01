@@ -163,15 +163,18 @@
   });
   document.getElementById("percent").addEventListener("click", function () {});
   document.getElementById("division").addEventListener("click", function () {
-    updateExpression("division");
+    operate();
+    operatorFirst = "division";
   });
   document
     .getElementById("multiplication")
     .addEventListener("click", function () {
-      updateExpression("multiplication");
+      operate();
+    operatorFirst = "multiplication";
     });
   document.getElementById("subtraction").addEventListener("click", function () {
-    updateExpression("subtraction");
+    operate();
+    operatorFirst = "subtraction";
   });
   document.getElementById("addition").addEventListener("click", function () {
     operate();
@@ -179,19 +182,6 @@
   });
   document.getElementById("decimal").addEventListener("click", function () {});
   document.getElementById("equals").addEventListener("click", function () {
-    displayReset = true;
-    displayValue = evalExpression(
-      operandLeftSide,
-      operandRightSide,
-      evalFunction
-    );
-    equalsTrigger = true;
-    operandLeftSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
-    console.log("After equals: ");
-    console.log("displayValue", displayValue);
-    console.log("operandLeftSide: ", operandLeftSide);
-    console.log("operandRightSide: ", operandRightSide);
-    console.log("evalFunction: ", evalFunction);
+    operate();
   });
 </script>
