@@ -34,45 +34,23 @@
   let operandRightSide = null;
   let operatorFirst = null;
   let operatorSecond = null;
-  let evalFunction = null;
   let displayReset = false;
   let displayValue = 0;
-  function updateDisplay(digitPress, displayParam) {
-    switch (displayParam) {
+  function updateDisplay(digitPress) {
+    switch (displayValue) {
       case 0:
-        return digitPress;
+        displayValue = digitPress;
+        break;
       default:
         if (displayReset) {
           displayReset = false;
-          return digitPress;
+          displayValue = digitPress;
+          break;
         }
-        return displayParam * 10 + digitPress;
+        displayValue = displayValue * 10 + digitPress;
+        break;
     }
-  }
-  function evalExpression(valueLHSParam, valueRHSParam, evalParam) {
-    switch (evalParam) {
-      case "addition":
-        return valueLHSParam + valueRHSParam;
-      case "subtraction":
-        return valueLHSParam - valueRHSParam;
-      case "multiplication":
-        return valueLHSParam * valueRHSParam;
-      case "division":
-        return valueLHSParam / valueRHSParam;
-      default:
-        return valueRHSParam;
-    }
-  }
-  function updateExpression(functionType) {
-    displayReset = true;
-    displayValue = evalExpression(
-      operandLeftSide,
-      operandRightSide,
-      evalFunction
-    );
-    evalFunction = functionType;
-    operandLeftSide = displayValue;
-    operandRightSide = 0;
+    operandRightSide = displayValue;
     document.getElementById("display").innerHTML = displayValue;
   }
   function operate() {
@@ -89,68 +67,56 @@
         break;
       case "division":
         displayValue = operandLeftSide / operandRightSide;
+        break;
     }
     operandLeftSide = displayValue;
-    operatorFirst = operatorSecond;
-    operandRightSide = 0;
+    if (operatorSecond != "equals") {
+      operatorFirst = operatorSecond;
+    }
     document.getElementById("display").innerHTML = displayValue;
+    console.log("After operate()");
+    console.log("operandLeftSide: ", operandLeftSide);
+    console.log("operandRightSide: ", operandRightSide);
+    console.log("operatorFirst: ", operatorFirst);
+    console.log("operatorSecond: ", operatorSecond);
   }
   document.getElementById("one").addEventListener("click", function () {
-    displayValue = updateDisplay(1, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(1);
   });
   document.getElementById("two").addEventListener("click", function () {
-    displayValue = updateDisplay(2, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(2);
   });
   document.getElementById("three").addEventListener("click", function () {
-    displayValue = updateDisplay(3, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(3);
   });
   document.getElementById("four").addEventListener("click", function () {
-    displayValue = updateDisplay(4, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(4);
   });
   document.getElementById("five").addEventListener("click", function () {
-    displayValue = updateDisplay(5, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(5);
   });
   document.getElementById("six").addEventListener("click", function () {
-    displayValue = updateDisplay(6, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(6);
   });
   document.getElementById("seven").addEventListener("click", function () {
-    displayValue = updateDisplay(7, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(7);
   });
   document.getElementById("eight").addEventListener("click", function () {
-    displayValue = updateDisplay(8, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(8);
   });
   document.getElementById("nine").addEventListener("click", function () {
-    displayValue = updateDisplay(9, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(9);
   });
   document.getElementById("zero").addEventListener("click", function () {
-    displayValue = updateDisplay(0, displayValue);
-    operandRightSide = displayValue;
-    document.getElementById("display").innerHTML = displayValue;
+    updateDisplay(0);
   });
   document.getElementById("clear").addEventListener("click", function () {
+    operandLeftSide = null;
+    operandRightSide = null;
+    operatorFirst = null;
+    operatorSecond = null;
+    displayReset = false;
     displayValue = 0;
-    operandLeftSide = 0;
-    operandRightSide = 0;
-    evalFunction = null;
-    equalsTrigger = false;
     document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("plus-minus").addEventListener("click", function () {
@@ -163,25 +129,29 @@
   });
   document.getElementById("percent").addEventListener("click", function () {});
   document.getElementById("division").addEventListener("click", function () {
+    operatorSecond = "division";
     operate();
-    operatorFirst = "division";
   });
   document
     .getElementById("multiplication")
     .addEventListener("click", function () {
+      operatorSecond = "multiplication";
       operate();
-    operatorFirst = "multiplication";
     });
   document.getElementById("subtraction").addEventListener("click", function () {
+    operatorSecond = "subtraction";
     operate();
-    operatorFirst = "subtraction";
   });
   document.getElementById("addition").addEventListener("click", function () {
+    if (operatorSecond == "equals") {
+      operatorFirst = null;
+    }
+    operatorSecond = "addition";
     operate();
-    operatorFirst = "addition";
   });
   document.getElementById("decimal").addEventListener("click", function () {});
   document.getElementById("equals").addEventListener("click", function () {
+    operatorSecond = "equals";
     operate();
   });
 </script>
