@@ -1,0 +1,39 @@
+* {
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+#calculator {
+  font-size: 24px;
+  display: grid;
+  background: black;
+  width: 240px;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0.5em;
+}
+
+.number, #decimal {
+  background: gray;
+}
+
+.function, #equals {
+  background: orange;
+}
+
+#display {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  background: darkgray;
+  text-align: right;
+}
+
+#zero {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+#clear, #plus-minus, #percent {
+  background: lightgray;
+}
