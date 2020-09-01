@@ -63,10 +63,22 @@
         return valueRHSParam;
     }
   }
+  function updateExpression(functionType) {
+    displayReset = true;
+    if (equalsTrigger) {
+      valueRightSide = 0;
+      equalsTrigger = false;
+    }
+    displayNumber = evalExpression(valueLeftSide, valueRightSide, evalFunction);
+    evalFunction = functionType;
+    valueLeftSide = displayNumber;
+    valueRightSide = 0;
+    console.log("This happened. displayNumber: ", displayNumber);
+    document.getElementById("display").innerHTML = displayNumber;
+  }
   document.getElementById("one").addEventListener("click", function () {
     displayNumber = updateDisplay(1, displayNumber);
     valueRightSide = displayNumber;
-    equalsTrigger = false;
     document.getElementById("display").innerHTML = displayNumber;
   });
   document.getElementById("two").addEventListener("click", function () {
@@ -127,58 +139,18 @@
     .addEventListener("click", function () {});
   document.getElementById("percent").addEventListener("click", function () {});
   document.getElementById("division").addEventListener("click", function () {
-    displayReset = true;
-    if (equalsTrigger) {
-      valueRightSide = 0;
-      equalsTrigger = false;
-    }
-    displayNumber = evalExpression(valueLeftSide, valueRightSide, evalFunction);
-    evalFunction = "division";
-    valueLeftSide = displayNumber;
-    valueRightSide = 0;
-    document.getElementById("display").innerHTML = displayNumber;
+    updateExpression("division");
   });
   document
     .getElementById("multiplication")
     .addEventListener("click", function () {
-      displayReset = true;
-      if (equalsTrigger) {
-        valueRightSide = 0;
-        equalsTrigger = false;
-      }
-      displayNumber = evalExpression(
-        valueLeftSide,
-        valueRightSide,
-        evalFunction
-      );
-      evalFunction = "multiplication";
-      valueLeftSide = displayNumber;
-      valueRightSide = 0;
-      document.getElementById("display").innerHTML = displayNumber;
+      updateExpression("multiplication");
     });
   document.getElementById("subtraction").addEventListener("click", function () {
-    displayReset = true;
-    if (equalsTrigger) {
-      valueRightSide = 0;
-      equalsTrigger = false;
-    }
-    displayNumber = evalExpression(valueLeftSide, valueRightSide, evalFunction);
-    evalFunction = "subtraction";
-    valueLeftSide = displayNumber;
-    valueRightSide = 0;
-    document.getElementById("display").innerHTML = displayNumber;
+    updateExpression("subtraction");
   });
   document.getElementById("addition").addEventListener("click", function () {
-    displayReset = true;
-    if (equalsTrigger) {
-      valueRightSide = 0;
-      equalsTrigger = false;
-    }
-    displayNumber = evalExpression(valueLeftSide, valueRightSide, evalFunction);
-    evalFunction = "addition";
-    valueLeftSide = displayNumber;
-    valueRightSide = 0;
-    document.getElementById("display").innerHTML = displayNumber;
+    updateExpression("addition");
   });
   document.getElementById("decimal").addEventListener("click", function () {});
   document.getElementById("equals").addEventListener("click", function () {
