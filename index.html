@@ -30,12 +30,13 @@
 </body>
 
 <script>
-  let valueLeftSide = null;
-  let valueRightSide = null;
+  let operandLeftSide = null;
+  let operandRightSide = null;
+  let operatorFirst = null;
+  let operatorSecond = null;
   let evalFunction = null;
-  let equalsTrigger = false;
   let displayReset = false;
-  let displayNumber = 0;
+  let displayValue = 0;
   function updateDisplay(digitPress, displayParam) {
     switch (displayParam) {
       case 0:
@@ -43,7 +44,6 @@
       default:
         if (displayReset) {
           displayReset = false;
-          console.log("Why did this happen?");
           return digitPress;
         }
         return displayParam * 10 + digitPress;
@@ -65,78 +65,102 @@
   }
   function updateExpression(functionType) {
     displayReset = true;
-    if (equalsTrigger) {
-      valueRightSide = 0;
-      equalsTrigger = false;
-    }
-    displayNumber = evalExpression(valueLeftSide, valueRightSide, evalFunction);
+    displayValue = evalExpression(
+      operandLeftSide,
+      operandRightSide,
+      evalFunction
+    );
     evalFunction = functionType;
-    valueLeftSide = displayNumber;
-    valueRightSide = 0;
-    console.log("This happened. displayNumber: ", displayNumber);
-    document.getElementById("display").innerHTML = displayNumber;
+    operandLeftSide = displayValue;
+    operandRightSide = 0;
+    document.getElementById("display").innerHTML = displayValue;
+  }
+  function operate() {
+    displayReset = true;
+    switch (operatorFirst) {
+      case "addition":
+        displayValue = operandLeftSide + operandRightSide;
+        break;
+      case "subtraction":
+        displayValue = operandLeftSide - operandRightSide;
+        break;
+      case "multiplication":
+        displayValue = operandLeftSide * operandRightSide;
+        break;
+      case "division":
+        displayValue = operandLeftSide / operandRightSide;
+    }
+    operandLeftSide = displayValue;
+    operatorFirst = operatorSecond;
+    operandRightSide = 0;
+    document.getElementById("display").innerHTML = displayValue;
   }
   document.getElementById("one").addEventListener("click", function () {
-    displayNumber = updateDisplay(1, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(1, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("two").addEventListener("click", function () {
-    displayNumber = updateDisplay(2, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(2, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("three").addEventListener("click", function () {
-    displayNumber = updateDisplay(3, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(3, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("four").addEventListener("click", function () {
-    displayNumber = updateDisplay(4, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(4, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("five").addEventListener("click", function () {
-    displayNumber = updateDisplay(5, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(5, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("six").addEventListener("click", function () {
-    displayNumber = updateDisplay(6, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(6, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("seven").addEventListener("click", function () {
-    displayNumber = updateDisplay(7, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(7, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("eight").addEventListener("click", function () {
-    displayNumber = updateDisplay(8, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(8, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("nine").addEventListener("click", function () {
-    displayNumber = updateDisplay(9, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(9, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("zero").addEventListener("click", function () {
-    displayNumber = updateDisplay(0, displayNumber);
-    valueRightSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    displayValue = updateDisplay(0, displayValue);
+    operandRightSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
   });
   document.getElementById("clear").addEventListener("click", function () {
-    displayNumber = 0;
-    valueLeftSide = 0;
-    valueRightSide = 0;
+    displayValue = 0;
+    operandLeftSide = 0;
+    operandRightSide = 0;
     evalFunction = null;
     equalsTrigger = false;
-    document.getElementById("display").innerHTML = displayNumber;
+    document.getElementById("display").innerHTML = displayValue;
   });
-  document
-    .getElementById("plus-minus")
-    .addEventListener("click", function () {});
+  document.getElementById("plus-minus").addEventListener("click", function () {
+    displayValue *= -1;
+    document.getElementById("display").innerHTML = displayValue;
+    operandRightSide = displayValue;
+    console.log("displayValue", displayValue);
+    console.log("operandLeftSide: ", operandLeftSide);
+    console.log("operandRightSide: ", operandRightSide);
+  });
   document.getElementById("percent").addEventListener("click", function () {});
   document.getElementById("division").addEventListener("click", function () {
     updateExpression("division");
@@ -150,14 +174,24 @@
     updateExpression("subtraction");
   });
   document.getElementById("addition").addEventListener("click", function () {
-    updateExpression("addition");
+    operate();
+    operatorFirst = "addition";
   });
   document.getElementById("decimal").addEventListener("click", function () {});
   document.getElementById("equals").addEventListener("click", function () {
     displayReset = true;
-    displayNumber = evalExpression(valueLeftSide, valueRightSide, evalFunction);
+    displayValue = evalExpression(
+      operandLeftSide,
+      operandRightSide,
+      evalFunction
+    );
     equalsTrigger = true;
-    valueLeftSide = displayNumber;
-    document.getElementById("display").innerHTML = displayNumber;
+    operandLeftSide = displayValue;
+    document.getElementById("display").innerHTML = displayValue;
+    console.log("After equals: ");
+    console.log("displayValue", displayValue);
+    console.log("operandLeftSide: ", operandLeftSide);
+    console.log("operandRightSide: ", operandRightSide);
+    console.log("evalFunction: ", evalFunction);
   });
 </script>
